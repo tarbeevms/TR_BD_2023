@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title -%}
+{% if title %}
+         <title>{{title}}</title>
+{% else %}
+         <title>Про Flask</title>
+{% endif %}
+{% endblock %}
+</head>
+ <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        color: #333;
+        text-align: center;
+    }
+
+    h1, h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    form {
+        max-width: 600px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    table {
+        width: 80%; /* Чуть меньший размер */
+        margin: 20px auto; /* Центрирование */
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .flower-container {
+        margin-bottom: 15px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+
+    label,
+    input,
+    select,
+    textarea,
+    button {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    }
+
+/* Добавьте этот блок, если хотите стилизовать submit кнопки формы */
+    input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    }
+
+    .flashes {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .flashes li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .flashes .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .flashes .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    /* Стили для элементов списка */
+    li {
+        margin-bottom: 10px;
+        list-style-type: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: inline-block;
+        background-color: #fff;
+    }
+
+    a:hover {
+        background-color: #f0f0f0;
+    }
+
+    li {
+        display: inline-block;
+        margin-right: 10px; /* Горизонтальный отступ между кнопками */
+    }
+
+    a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: inline-block;
+        background-color: #fff;
+    }
+
+    a:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+<body>
+{% block content -%}
+<li><a href="auth">Авторизация</a></li>
+<li><a href="FAQ">О сайте</a></li>
+<li><a href="dashboard">Страница управления</a></li>
+<li><a href="logout">Выйти</a></li>
+{% endblock -%}
+</body>
+</html>
+

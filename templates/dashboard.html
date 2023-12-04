@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{{ super() }}
+<p><label>Привет, {{current_user.firstname}} {{current_user.lastname}} ! Ваш уровень доступа: {{current_user.post}}.</label>
+
+    <h1>Панель инструментов</h1>
+    {% if current_user.post == "работник"%}
+    <li><a href="create_order">Cоздать заказ</a></li>
+    {% endif %}
+
+    {% if current_user.post == "менеджер"%}
+    <li><a href="create_order">Cоздать заказ</a></li>
+    <li><a href="view_orders">Просмотр заказов</a></li>
+    {% endif %}
+
+    {% if current_user.post == "владелец"%}
+    <li><a href="create_order">Cоздать заказ</a></li>
+    <li><a href="view_orders">Просмотр заказов</a></li>
+    <li><a href="manage_flowers">Управление цветами в ассортименте</a></li>
+    <li><a href="add_employee">Управление сотрудниками</a></li>
+    <li><a href="view_customers">Просмотр клиентов</a></li>
+    <li><a href="view_revenue">Просмотр выручки</a></li>
+    {% endif %}
+
+{% endblock %}

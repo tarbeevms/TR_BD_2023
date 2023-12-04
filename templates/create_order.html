@@ -1,0 +1,99 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+{{ super() }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать заказ</title>
+    <link rel="stylesheet" href="путь/к/вашему/styles.css"> <!-- Добавьте ссылку на ваш файл стилей, если есть -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#addFlower").click(function () {
+                var html = '<div class="flower-container">';
+                html += '<label for="flowers">Выберите цветы:</label>';
+                html += '<select name="flowers" class="flowers" multiple>';
+                {% for flower in flowers %}
+                    html += '<option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>';
+                {% endfor %}
+                html += '</select>';
+                html += '<label for="quantities">Количество:</label>';
+                html += '<input type="number" name="quantities" class="quantities" required>';
+                html += '<button type="button" class="removeFlower">Удалить цветок</button>';
+                html += '</div>';
+                $("#flowerContainer").append(html);
+            });
+
+            $("#flowerContainer").on("click", ".removeFlower", function () {
+                $(this).closest('.flower-container').remove();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Создать заказ</h1>
+    <form method="post" action="{{ url_for('create_order') }}">
+        <div id="flowerContainer">
+            <div class="flower-container">
+                <label for="flowers">Выберите цветы:</label>
+                <select name="flowers[]" class="flowers" multiple>
+                    {% for flower in flowers %}
+                    <option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>
+                    {% endfor %}
+                </select>
+                <label for="quantities">Количество:</label>
+                <input type="number" name="quantities[]" class="quantities" required>
+            </div>
+        </div>
+        <button type="button" id="addFlower">Добавить цветок</button>
+
+        <!-- Остальные поля формы здесь -->
+        <div>
+            <label for="delivery_address">Адрес доставки:</label>
+            <input type="text" name="delivery_address" required>
+        </div>
+        <div>
+            <label for="delivery_rate">Выберите тариф доставки:</label>
+            <select name="delivery_rate">
+                {% for rate in delivery_rates %}
+                <option value="{{ rate.deliveryrateid }}">{{ rate.ratename }} - {{ rate.deliverycost }} руб. Доставка в течение {{rate.deliverytimehours}} часов.</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="payment_method">Способ оплаты:</label>
+            <select name="payment_method" required>
+                <option value="карта">Карта</option>
+                <option value="наличные">Наличные</option>
+            </select>
+        </div>
+        <div>
+            <label for="first_name">Имя:</label>
+            <input type="text" name="first_name" required>
+        </div>
+        <div>
+            <label for="last_name">Фамилия:</label>
+            <input type="text" name="last_name" required>
+        </div>
+        <div>
+            <label for="customer_phone">Телефон клиента:</label>
+            <input type="tel" name="customer_phone" required>
+        </div>
+        <div>
+            <label for="order_description">Описание заказа:</label>
+            <textarea name="order_description"></textarea>
+        </div>
+        <div>
+            <button type="submit">Разместить заказ</button>
+        </div>
+    </form>
+
+</body>
+</html>
+{% endblock %}

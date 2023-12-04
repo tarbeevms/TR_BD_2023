@@ -1,0 +1,68 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+{{ super() }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление сотрудниками</title>
+</head>
+<body>
+
+    <h1>Управление сотрудниками</h1>
+
+    <h2>Текущие сотрудники</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Должность</th>
+            <th>Имя пользователя</th>
+            <th>Пароль</th>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.employeeid }}</td>
+                <td>{{ employee.firstname }}</td>
+                <td>{{ employee.lastname }}</td>
+                <td>{{ employee.post }}</td>
+                <td>{{ employee.username }}</td>
+                <td>{{ employee.password }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Добавить сотрудника</h2>
+    <form method="post" action="{{ url_for('add_employee') }}">
+        <label for="firstname">Имя:</label>
+        <input type="text" name="firstname" required>
+        <br>
+        <label for="lastname">Фамилия:</label>
+        <input type="text" name="lastname" required>
+        <br>
+        <label for="post">Должность:</label>
+        <input type="text" name="post" required>
+        <br>
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" required>
+        <br>
+        <label for="username">Имя пользователя:</label>
+        <input type="text" name="username" required>
+        <br>
+        <input type="submit" value="Добавить сотрудника">
+    </form>
+
+    <h2>Удалить сотрудника</h2>
+    <form method="post" action="{{ url_for('delete_employee') }}">
+        <label for="employee_id">ID сотрудника:</label>
+        <input type="number" name="employee_id" required>
+        <br>
+        <input type="submit" value="Удалить сотрудника">
+    </form>
+
+</body>
+</html>
+{% endblock %}
