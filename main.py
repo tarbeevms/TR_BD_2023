@@ -1,11 +1,10 @@
-from flask import Flask, render_template, g, request, flash
+from flask import Flask, render_template, g, request
 from flask import redirect, url_for
 import psycopg2
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Enum
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from sqlalchemy.orm import aliased
 
 # конфигурация
 DATABASE = "FlowerShop"
@@ -18,7 +17,8 @@ HOST = "localhost"
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost/FlowerShop?client_encoding=utf8'
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost/FlowerShop?client_encoding=utf8'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -150,6 +150,7 @@ def view_revenue():
     else:
         return f'''<h2>You have no permission to view revenue</h2><br>Your permission status is {current_user.post}. <a href="dashboard">Return to Dashboard</a>'''
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -174,7 +175,7 @@ def view_orders():
             .join(Orders, Payments.orderid == Orders.ordernumber)
             .join(Customers, Orders.customerid == Customers.customerid)
             .join(Deliveryrates, Payments.deliveryrateid == Deliveryrates.deliveryrateid)
-            .filter(Payments.orderstatus.in_(['оплачен', 'доставляется']))  # Фильтрация по orderstatus
+            .filter(Payments.orderstatus.in_(['оплачен', 'доставляется']))  # gg Фильтрация по orderstatus
             .distinct(Payments.orderid)
             .all()
         )
@@ -295,12 +296,12 @@ def calculate_total_cost(flower_ids, quantities, delivery_rate_id, customer_phon
         flower_prices = {flower.flowerid: flower.price for flower in Flowers.query.all()}
         delivery_rate = Deliveryrates.query.get(delivery_rate_id).deliverycost
         customer = Customers.query.filter_by(phonenumber=customer_phone).first()
-        if customer.customerstatus == 'vip':
-            mult1 = 0.75
-            mult2 = 0.7
-        else:
-            mult1 = 1
-            mult2 = 1
+        mult1 = 1
+        mult2 = 1
+        if customer:
+            if customer.customerstatus == 'vip':
+                mult1 = 0.75
+                mult2 = 0.7
         total_cost = 0.0
 
         for flower_id, quantity in zip(flower_ids, quantities):
@@ -439,4 +440,4 @@ def delete_employee():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=9876)
