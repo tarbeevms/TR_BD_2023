@@ -1,0 +1,57 @@
+/* style.css */
+
+/* Navbar styling */
+
+.navbar-brand {
+    transition: transform 0.3s ease-in-out; /* Adding a smooth transformation effect */
+}
+
+.navbar-brand:hover {
+    transform: scale(1.1); /* Scale the brand on hover */
+}
+
+.navbar-nav .nav-link {
+    transition: background-color 0.3s ease-in-out; /* Adding smooth background color transition */
+    border-radius: 15px; /* Rounded corners on hover */
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #6666; /* Change background color on hover */
+    border-radius: 15px; /* Rounded corners on hover */
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    line-height: 1; /* Установка высоты линии в 1, чтобы уменьшить высоту ячейки */
+}
+
+th {
+    background-color: #f8f9fa; /* Header background color */
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa; /* Alternate row color */
+}
+
+
+/* Smooth hover effect on table rows */
+tr:hover {
+    background-color: #e9ecef; /* Hover background color */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 3px; /* Rounded corners for buttons */
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Scale the button on hover */
+}

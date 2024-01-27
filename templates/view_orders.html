@@ -2,53 +2,55 @@
 
 {% block content %}
 {{ super() }}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Просмотр заказов</title>
-</head>
-<body>
-    <h1>Текущие заказы</h1>
-
-    <table border="1">
-        <tr>
-            <th>ID заказа</th>
-            <th>Тариф доставки</th>
-            <th>Дата заказа</th>
-            <th>Стоимость оплаты</th>
-            <th>Способ оплаты</th>
-            <th>Статус заказа</th>
-            <th>Описание</th>
-            <th>Телефон покупателя</th>
-            <th>Действие</th>
-        </tr>
-        {% for payment, order, customer, delivery in orders %}
-            <tr>
-                <td>{{ payment.orderid }}</td>
-                <td>{{ delivery.ratename }}</td>
-                <td>{{ payment.paymentdate }}</td>
-                <td>{{ payment.paymentcost }}</td>
-                <td>{{ payment.paymentmethod }}</td>
-                <td>{{ payment.orderstatus }}</td>
-                <td>{{ payment.paymentdescription }}</td>
-                <td>{{ customer.phonenumber }}</td>
-                <td>
-                    <form method="post">
-                        <input type="hidden" name="order_id" value="{{ payment.orderid }}">
-                        <select name="new_status">
-                            <option value="оплачен">Оплачен</option>
-                            <option value="доставляется">Доставляется</option>
-                            <option value="доставлен">Доставлен</option>
-                        </select>
-                        <button type="submit">Обновить статус</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+<style>
+    .wider-column {
+        width: 10%;
+    }
+</style>
+<body class="bg-light">
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Текущие заказы</h1>
+        <table class="table table-bordered mt-3 text-center">
+            <thead>
+                <tr>
+                    <th>ID заказа</th>
+                    <th>Тариф доставки</th>
+                    <th class="wider-column">Дата заказа</th>
+                    <th>Стоимость оплаты</th>
+                    <th>Способ оплаты</th>
+                    <th>Статус заказа</th>
+                    <th>Описание</th>
+                    <th>Телефон покупателя</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment, order, customer, delivery in orders %}
+                    <tr>
+                        <td>{{ payment.orderid }}</td>
+                        <td>{{ delivery.ratename }}</td>
+                        <td>{{ payment.paymentdate }}</td>
+                        <td>{{ payment.paymentcost }}</td>
+                        <td>{{ payment.paymentmethod }}</td>
+                        <td>{{ payment.orderstatus }}</td>
+                        <td>{{ payment.paymentdescription }}</td>
+                        <td>{{ customer.phonenumber }}</td>
+                        <td>
+                            <form method="post" class="d-inline-block">
+                                <input type="hidden" name="order_id" value="{{ payment.orderid }}">
+                                <select class="form-control d-inline-block" name="new_status">
+                                    <option value="оплачен">Оплачен</option>
+                                    <option value="доставляется">Доставляется</option>
+                                    <option value="доставлен">Доставлен</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary mt-2">Обновить статус</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
 {% endblock %}

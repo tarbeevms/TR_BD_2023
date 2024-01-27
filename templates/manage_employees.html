@@ -1,68 +1,62 @@
 {% extends 'dashboard.html' %}
 
 {% block content %}
-{{ super() }}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление сотрудниками</title>
-</head>
-<body>
+    {{ super() }}
+    <div class="container mt-4">
+        <h1 class="text-center">Управление сотрудниками</h1>
 
-    <h1>Управление сотрудниками</h1>
+        <div class="mt-3">
+            <h2 class="text-center">Текущие сотрудники</h2>
+            <div class="row">
+                {% for employee in employees %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ employee.firstname }} {{ employee.lastname }}</h5>
+                                <h6 class="card-text"><b>ID сотрудника: {{ employee.employeeid }} </b></h6>
+                                <p class="card-text">Должность: <b>{{ employee.post }}</b></p>
+                                <p class="card-text">Имя пользователя: <b>{{ employee.username }}</b></p>
+                                <p class="card-text">Пароль: <b>{{ employee.password }}</b></p>
+                                <form method="post" action="{{ url_for('delete_employee') }}">
+                                    <input type="hidden" name="employee_id" value="{{ employee.employeeid }}">
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 
-    <h2>Текущие сотрудники</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Должность</th>
-            <th>Имя пользователя</th>
-            <th>Пароль</th>
-        </tr>
-        {% for employee in employees %}
-            <tr>
-                <td>{{ employee.employeeid }}</td>
-                <td>{{ employee.firstname }}</td>
-                <td>{{ employee.lastname }}</td>
-                <td>{{ employee.post }}</td>
-                <td>{{ employee.username }}</td>
-                <td>{{ employee.password }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-
-    <h2>Добавить сотрудника</h2>
-    <form method="post" action="{{ url_for('add_employee') }}">
-        <label for="firstname">Имя:</label>
-        <input type="text" name="firstname" required>
-        <br>
-        <label for="lastname">Фамилия:</label>
-        <input type="text" name="lastname" required>
-        <br>
-        <label for="post">Должность:</label>
-        <input type="text" name="post" required>
-        <br>
-        <label for="password">Пароль:</label>
-        <input type="password" name="password" required>
-        <br>
-        <label for="username">Имя пользователя:</label>
-        <input type="text" name="username" required>
-        <br>
-        <input type="submit" value="Добавить сотрудника">
-    </form>
-
-    <h2>Удалить сотрудника</h2>
-    <form method="post" action="{{ url_for('delete_employee') }}">
-        <label for="employee_id">ID сотрудника:</label>
-        <input type="number" name="employee_id" required>
-        <br>
-        <input type="submit" value="Удалить сотрудника">
-    </form>
-
-</body>
-</html>
+        <div class="mb-4">
+            <h2 class="text-center">Добавить сотрудника</h2>
+            <div class="card mx-auto col-md-6">
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('add_employee') }}">
+                        <div class="form-group">
+                            <label for="firstname">Имя:</label>
+                            <input type="text" name="firstname" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Фамилия:</label>
+                            <input type="text" name="lastname" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="post">Должность:</label>
+                            <input type="text" name="post" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль:</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Имя пользователя:</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Добавить сотрудника</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

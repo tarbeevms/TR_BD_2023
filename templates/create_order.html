@@ -2,98 +2,152 @@
 
 {% block content %}
 {{ super() }}
-<!DOCTYPE html>
-<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создать заказ</title>
-    <link rel="stylesheet" href="путь/к/вашему/styles.css"> <!-- Добавьте ссылку на ваш файл стилей, если есть -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        .flower-table {
+            width: 100%;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .add-flower-button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .remove-flower-button {
+            width: 100%;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .add-flower-button {
+            display: block;
+            margin: auto; /* Добавлено для центрирования */
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
     <script>
         $(document).ready(function () {
+            var flowerCounter = 1;
+
             $("#addFlower").click(function () {
-                var html = '<div class="flower-container">';
-                html += '<label for="flowers">Выберите цветы:</label>';
-                html += '<select name="flowers" class="flowers" multiple>';
+                var html = '<tr class="flower-container">';
+                html += '<td>';
+                html += '<select name="flowers[]" class="form-control flowers" required>';
                 {% for flower in flowers %}
-                    html += '<option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>';
+                html += '<option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>';
                 {% endfor %}
                 html += '</select>';
-                html += '<label for="quantities">Количество:</label>';
-                html += '<input type="number" name="quantities" class="quantities" required>';
-                html += '<button type="button" class="removeFlower">Удалить цветок</button>';
-                html += '</div>';
-                $("#flowerContainer").append(html);
+                html += '</td>';
+                html += '<td>';
+                html += '<input type="number" name="quantities[]" class="form-control quantities" required min="1" value="1">';
+                html += '</td>';
+                html += '<td>';
+                if (flowerCounter > 0) {
+                    html += '<button type="button" class="btn btn-danger removeFlower remove-flower-button">Удалить</button>';
+                }
+                html += '</td>';
+                html += '</tr>';
+                $("#flowerTableBody").append(html);
+                flowerCounter++;
             });
 
-            $("#flowerContainer").on("click", ".removeFlower", function () {
-                $(this).closest('.flower-container').remove();
+            $("#flowerTableBody").on("click", ".removeFlower", function () {
+                if (flowerCounter > 1) {
+                    $(this).closest('.flower-container').remove();
+                    flowerCounter--;
+                }
             });
         });
     </script>
 </head>
 
 <body>
-    <h1>Создать заказ</h1>
+<div class="container mt-4">
+    <h1>Создание заказа</h1>
     <form method="post" action="{{ url_for('create_order') }}">
-        <div id="flowerContainer">
-            <div class="flower-container">
-                <label for="flowers">Выберите цветы:</label>
-                <select name="flowers[]" class="flowers" multiple>
-                    {% for flower in flowers %}
-                    <option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>
-                    {% endfor %}
-                </select>
-                <label for="quantities">Количество:</label>
-                <input type="number" name="quantities[]" class="quantities" required>
-            </div>
-        </div>
-        <button type="button" id="addFlower">Добавить цветок</button>
+        <table class="flower-table mx-auto col-md-5 text-center">
+            <thead>
+            <tr>
+                <th>Цветок</th>
+                <th>Количество</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody id="flowerTableBody">
+            <tr class="flower-container">
+                <td>
+                    <select name="flowers[]" class="form-control flowers" required>
+                        {% for flower in flowers %}
+                        <option value="{{ flower.flowerid }}">{{ flower.nameflower }} - {{ flower.price }} руб.</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="number" name="quantities[]" class="form-control quantities" required min="1" value="1">
+                </td>
+                <td>
+                    <!-- Disable remove button for the first position -->
+                    <button type="button" class="btn btn-danger removeFlower remove-flower-button" disabled>Удалить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" id="addFlower" class="btn btn-success add-flower-button col-md-5">Добавить цветок
+        </button>
 
-        <!-- Остальные поля формы здесь -->
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="delivery_address">Адрес доставки:</label>
-            <input type="text" name="delivery_address" required>
+            <input type="text" name="delivery_address" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="delivery_rate">Выберите тариф доставки:</label>
-            <select name="delivery_rate">
+            <select name="delivery_rate" class="form-control">
                 {% for rate in delivery_rates %}
-                <option value="{{ rate.deliveryrateid }}">{{ rate.ratename }} - {{ rate.deliverycost }} руб. Доставка в течение {{rate.deliverytimehours}} часов.</option>
+                <option value="{{ rate.deliveryrateid }}">{{ rate.ratename }} - {{ rate.deliverycost }} руб. Доставка в
+                    течение {{rate.deliverytimehours}} часов.
+                </option>
                 {% endfor %}
             </select>
         </div>
 
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="payment_method">Способ оплаты:</label>
-            <select name="payment_method" required>
+            <select name="payment_method" class="form-control" required>
                 <option value="карта">Карта</option>
                 <option value="наличные">Наличные</option>
             </select>
         </div>
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="first_name">Имя:</label>
-            <input type="text" name="first_name" required>
+            <input type="text" name="first_name" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="last_name">Фамилия:</label>
-            <input type="text" name="last_name" required>
+            <input type="text" name="last_name" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="customer_phone">Телефон клиента:</label>
-            <input type="tel" name="customer_phone" required>
+            <input type="tel" name="customer_phone" class="form-control" required>
         </div>
-        <div>
+        <div class="form-group col-md-6 mx-auto">
             <label for="order_description">Описание заказа:</label>
-            <textarea name="order_description"></textarea>
+            <textarea name="order_description" class="form-control"></textarea>
         </div>
-        <div>
-            <button type="submit">Разместить заказ</button>
+        <div class="form-group col-md-6 mx-auto">
+            <button type="submit" class="btn btn-primary">Разместить заказ</button>
         </div>
     </form>
-
+</div>
 </body>
-</html>
 {% endblock %}

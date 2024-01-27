@@ -1,27 +1,33 @@
 {% extends 'dashboard.html' %}
 
 {% block content %}
-{{ super() }}
-<h1>Просмотр клиентов</h1>
+    {{ super() }}
+    <div class="container mt-4">
+        <h1 class="text-center">Просмотр клиентов</h1>
 
-<table border="1">
-    <tr>
-        <th>ID клиента</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Статус</th>
-        <th>Ежемесячная сумма покупок</th>
-        <th>Номер телефона</th>
-    </tr>
-    {% for customer in customers %}
-        <tr>
-            <td>{{ customer.customerid }}</td>
-            <td>{{ customer.firstname }}</td>
-            <td>{{ customer.lastname }}</td>
-            <td>{{ customer.customerstatus }}</td>
-            <td>{% if customer.monthlypurchaseamount %}{{ customer.monthlypurchaseamount }} руб. {% else %}N/A{% endif %}</td>
-            <td>{{ customer.phonenumber }}</td>
-        </tr>
-    {% endfor %}
-</table>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>ID клиента</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Статус</th>
+                    <th>Ежемесячная сумма покупок</th>
+                    <th>Номер телефона</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.customerid }}</td>
+                        <td>{{ customer.firstname }}</td>
+                        <td>{{ customer.lastname }}</td>
+                        <td>{{ customer.customerstatus }}</td>
+                        <td>{% if customer.monthlypurchaseamount %}{{ customer.monthlypurchaseamount }} руб. {% else %}N/A{% endif %}</td>
+                        <td>{{ customer.phonenumber }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

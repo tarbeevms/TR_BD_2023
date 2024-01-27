@@ -2,31 +2,26 @@
 
 {% block content %}
 {{ super() }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revenue Summary</title>
-</head>
-<body>
-    <h1>Выручка</h1>
+<body class="container mt-4">
+<h1 class="mt-4 text-center">Выручка</h1>
 
-    <table border="1">
-        <tr>
-            <th>Выручка за сегодня</th>
-            <th>Выручка за неделю</th>
-            <th>Выручка за месяц</th>
-        </tr>
-        {% for row in revenue %}
-            <tr>
-                <td>{{ row[0] }} руб.</td>
-                <td>{{ row[1] }} руб.</td>
-                <td>{{ row[2] }} руб.</td>
-            </tr>
-        {% endfor %}
-    </table>
+<table class="table table-bordered text-center">
+    <thead>
+    <tr>
+        <th>Выручка за сегодня</th>
+        <th>Выручка за неделю</th>
+        <th>Выручка за месяц</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in revenue %}
+    <tr>
+        <td>{{ row[0] }} руб.</td>
+        <td>{{ row[1] }} руб.</td>
+        <td>{{ row[2] }} руб.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
-</html>
 {% endblock %}
